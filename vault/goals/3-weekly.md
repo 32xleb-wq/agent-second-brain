@@ -1,7 +1,7 @@
 ---
 type: weekly
-week: YYYY-WWW
-updated: YYYY-MM-DD
+week: 2026-W39
+updated: 2026-09-26
 ---
 
 # Weekly Focus
@@ -9,7 +9,7 @@ updated: YYYY-MM-DD
 ## ONE Big Thing
 
 > **If I accomplish nothing else, I will:**
-> [Single most important outcome for this week]
+> Снять и выложить минимум 1 видео (в идеале длинное разговорное) до конца недели
 
 <!-- This is read by the bot during daily processing -->
 
@@ -17,9 +17,9 @@ updated: YYYY-MM-DD
 
 ## Week at a Glance
 
-**Week:** [X] of 52
-**Energy Level:** [High/Medium/Low]
-**Available Hours:** [X] hours focused work
+**Week:** 39 of 52
+**Energy Level:** Medium
+**Available Hours:** ~3-7 ч фокусной работы в день (DeFi 1-2ч, блог 1-3ч, здоровье 1-2ч)
 
 ---
 
@@ -27,14 +27,15 @@ updated: YYYY-MM-DD
 
 ### Must Do (Non-negotiable)
 
-- [ ] Task 1 — Связь: [[1-yearly-2025#Goal]]
-- [ ] Task 2
-- [ ] Task 3
+- [ ] Снять и выложить видео (минимум 1) — Связь: [[2-monthly#Priority 1]]
+- [ ] Ежедневно (Пн–Пт): DeFi работа
+- [ ] Ежедневно (Пн–Пт): сценарий или хуки для видео
 
 ### Should Do (Important)
 
-- [ ] Task 1
-- [ ] Task 2
+- [ ] Доделать бота для генерации хуков
+- [ ] Настроить парсеры под контент
+- [ ] Написать Виталию (Дананг) — предложить помощь, замутить тусовку
 
 ### Could Do (If time permits)
 
@@ -90,9 +91,9 @@ updated: YYYY-MM-DD
 
 | Habit | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
 |-------|-----|-----|-----|-----|-----|-----|-----|
-| [Habit 1] | | | | | | | |
-| [Habit 2] | | | | | | | |
-| [Habit 3] | | | | | | | |
+| DeFi работа | | | | | | | |
+| Видео (сценарий/хуки) | | | | | | | |
+| Физнагрузка | | | | | | | |
 
 ---
 

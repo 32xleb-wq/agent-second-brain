@@ -6,17 +6,18 @@ Curated knowledge that persists across sessions. Part of the 3-layer memory arch
 
 | Field | Value |
 |-------|-------|
-| Name | [Your name] |
-| Timezone | [Your timezone, e.g., UTC+5] |
-| Location | [City/Country] |
-| Primary language | [e.g., Russian/English] |
+| Name | Паша Тейков (блог-псевдоним) |
+| Timezone | UTC+7 (Индокитай) |
+| Location | Дананг, Вьетнам |
+| Primary language | Russian |
+| Occupation | DeFi |
 
 ## Preferences
 
 ### Tech Stack
-- Languages: [e.g., Python, TypeScript]
-- Frameworks: [e.g., React, FastAPI]
-- Tools: [e.g., Cursor, Claude Code]
+- Подход: не пишет с нуля — берёт готовые open-source решения с GitHub, собирает из них свой "конструктор" под задачу
+- Кастомизация: докручивает через vibe-coding с AI-ассистентами (Codex и т.п.)
+- Для блога нужны: бот-генератор хуков, парсеры
 
 ### Communication Style
 - Preferred response language: [Russian/English/Mixed]
@@ -38,20 +39,23 @@ Curated knowledge that persists across sessions. Part of the 3-layer memory arch
 
 ### ONE Big Thing (This Week)
 <!-- From goals/3-weekly.md -->
-- [ ] [Current week's main focus]
+- [ ] Снять и выложить минимум 1 видео (в идеале длинное разговорное) до конца недели
 
 ### Hot Projects
-1. [Project name] — [status/next action]
+1. Блог (YouTube + Reels + тексты) — по сути соло-проект (+ продюсер, изредка помогает, например с монтажом). Раньше пробовал собрать кружок видеолюбителей — не взлетело (люди оказались ленивыми), решил учиться снимать сам. Поиск единомышленников — фоновая задача, сейчас не приоритет. Новая рубрика/челлендж: «как я ищу друзей на чужбине» (снимать открыто, сначала про друзей, потом про отношения)
+2. Здоровье — обследование, вопрос ГЗТ, снижение веса, ментальная стабильность
+3. Люди/отношения — сейчас почти никого в круге общения, одиночество ощущается остро; план: сначала друзья, потом отношения/девушка
 
 ### Pipeline/Leads
 <!-- If applicable -->
-- [Lead name] — [status]
+-
 
 ## Key People
 
 | Name | Role | Contact | Notes |
 |------|------|---------|-------|
-| [Name] | [Role] | [Telegram/Email] | [Context] |
+| Виталий | Знакомый (Дананг) | — | Живёт в Дананге (я в Хойане), хотел замутить тусовку — надо подтолкнуть, предложить помощь, чтобы случилось |
+| Продюсер (имя уточнить) | Помогает с блогом (монтаж и т.п.) | — | Иногда подсобляет за идею будущего кейс-блогера; единственный человек в команде проекта |
 
 ## Learnings
 
@@ -62,7 +66,7 @@ Curated knowledge that persists across sessions. Part of the 3-layer memory arch
 - [Anti-pattern to avoid]
 
 ### Rules to Remember
-- [Important rule discovered during work]
+- Декомпозировать задачи по всем проектам на 3 уровня энергии (низкая/средняя/высокая), чтобы на любом состоянии было чем заняться — системная идея, применить при постановке задач
 
 ## Quick Links
 

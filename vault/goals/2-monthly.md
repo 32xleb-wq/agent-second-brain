@@ -1,50 +1,50 @@
 ---
 type: monthly
-period: YYYY-MM
-updated: YYYY-MM-DD
+period: 2026-09
+updated: 2026-09-26
 ---
 
 # Monthly Focus
 
 ## Top 3 Priorities
 
-### Priority 1: [Your Top Priority]
+### Priority 1: Блог — видео-контент (YouTube + Reels)
 <!-- What MUST happen this month? -->
 
-**Why it matters:** [connection to yearly goal]
+**Why it matters:** запуск нового медиа-проекта, основной фокус сейчас
 
 **Key Actions:**
-- [ ] Action 1
-- [ ] Action 2
-- [ ] Action 3
+- [ ] Сценарии и хуки для первых видео
+- [ ] Настроить инфраструктуру ИИ-агентов и приложений под блог
+- [ ] Начать регулярные съёмки (YouTube + Reels)
 
-**Definition of Done:** [clear outcome]
+**Definition of Done:** первые видео сняты и опубликованы, конвейер контента работает
 
 ---
 
-### Priority 2: [Second Priority]
+### Priority 2: Здоровье
 
-**Why it matters:** [connection to yearly goal]
+**Why it matters:** база для всего остального — энергия и стабильность
 
 **Key Actions:**
-- [ ] Action 1
-- [ ] Action 2
-- [ ] Action 3
+- [ ] Пройти полное медицинское обследование — дедлайн: 2026-10-10 (2 недели от 26.09)
+- [ ] Проработать вопрос ГЗТ (возможно, начать)
+- [ ] Снижение веса, стабилизация ментального состояния
 
-**Definition of Done:** [clear outcome]
+**Definition of Done:** обследование пройдено, план по весу/ГЗТ определён
 
 ---
 
-### Priority 3: [Third Priority]
+### Priority 3: Люди и отношения
 
-**Why it matters:** [connection to yearly goal]
+**Why it matters:** социализация и личная жизнь — параллельный трек к блогу и здоровью
 
 **Key Actions:**
-- [ ] Action 1
-- [ ] Action 2
-- [ ] Action 3
+- [ ] Активный поиск и укрепление дружеских связей
+- [ ] Работа над личными отношениями / поиск девушки
+- [ ] Социализация вокруг съёмок (нетворкинг для контента)
 
-**Definition of Done:** [clear outcome]
+**Definition of Done:** ощутимый прогресс в круге общения и личной жизни
 
 ---
 
