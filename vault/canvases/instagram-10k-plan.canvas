@@ -1,0 +1,46 @@
+{
+  "nodes": [
+    {"id": "center", "x": 400, "y": 400, "width": 300, "height": 100, "type": "text", "text": "🎯 10 000 подписчиков в Instagram", "color": "5"},
+
+    {"id": "content", "x": 40, "y": 120, "width": 260, "height": 80, "type": "text", "text": "📹 Контент", "color": "4"},
+    {"id": "content-1", "x": -280, "y": 60, "width": 280, "height": 80, "type": "text", "text": "Формат: Reels + сторис"},
+    {"id": "content-2", "x": -280, "y": 170, "width": 280, "height": 80, "type": "text", "text": "Тема: путь блогера/DeFi + личное"},
+
+    {"id": "hooks", "x": 780, "y": 120, "width": 260, "height": 80, "type": "text", "text": "🪝 Хуки и сценарии", "color": "4"},
+    {"id": "hooks-1", "x": 1120, "y": 60, "width": 280, "height": 80, "type": "text", "text": "Бот-генератор хуков (доделать)"},
+    {"id": "hooks-2", "x": 1120, "y": 170, "width": 280, "height": 80, "type": "text", "text": "3+ сильных хука в неделю"},
+
+    {"id": "cadence", "x": 40, "y": 680, "width": 260, "height": 80, "type": "text", "text": "📅 Регулярность", "color": "4"},
+    {"id": "cadence-1", "x": -280, "y": 620, "width": 280, "height": 80, "type": "text", "text": "3-5 Reels/постов в неделю"},
+    {"id": "cadence-2", "x": -280, "y": 730, "width": 280, "height": 80, "type": "text", "text": "Съёмка блоками (по расписанию дня)"},
+
+    {"id": "promo", "x": 780, "y": 680, "width": 260, "height": 80, "type": "text", "text": "📈 Продвижение", "color": "4"},
+    {"id": "promo-1", "x": 1120, "y": 620, "width": 280, "height": 80, "type": "text", "text": "Кросспостинг YouTube → Reels"},
+    {"id": "promo-2", "x": 1120, "y": 730, "width": 280, "height": 80, "type": "text", "text": "Коллабы / нетворкинг с блогерами"},
+
+    {"id": "metrics", "x": 460, "y": 850, "width": 260, "height": 80, "type": "text", "text": "📊 Метрики", "color": "4"},
+    {"id": "metrics-1", "x": 300, "y": 1000, "width": 280, "height": 80, "type": "text", "text": "Отслеживать рост еженедельно"},
+    {"id": "metrics-2", "x": 620, "y": 1000, "width": 280, "height": 80, "type": "text", "text": "Тестировать форматы, оставлять рабочее"}
+  ],
+  "edges": [
+    {"id": "e-content", "fromNode": "center", "fromSide": "left", "toNode": "content", "toSide": "right"},
+    {"id": "e-content-1", "fromNode": "content", "fromSide": "left", "toNode": "content-1", "toSide": "right"},
+    {"id": "e-content-2", "fromNode": "content", "fromSide": "left", "toNode": "content-2", "toSide": "right"},
+
+    {"id": "e-hooks", "fromNode": "center", "fromSide": "right", "toNode": "hooks", "toSide": "left"},
+    {"id": "e-hooks-1", "fromNode": "hooks", "fromSide": "right", "toNode": "hooks-1", "toSide": "left"},
+    {"id": "e-hooks-2", "fromNode": "hooks", "fromSide": "right", "toNode": "hooks-2", "toSide": "left"},
+
+    {"id": "e-cadence", "fromNode": "center", "fromSide": "left", "toNode": "cadence", "toSide": "right"},
+    {"id": "e-cadence-1", "fromNode": "cadence", "fromSide": "left", "toNode": "cadence-1", "toSide": "right"},
+    {"id": "e-cadence-2", "fromNode": "cadence", "fromSide": "left", "toNode": "cadence-2", "toSide": "right"},
+
+    {"id": "e-promo", "fromNode": "center", "fromSide": "right", "toNode": "promo", "toSide": "left"},
+    {"id": "e-promo-1", "fromNode": "promo", "fromSide": "right", "toNode": "promo-1", "toSide": "left"},
+    {"id": "e-promo-2", "fromNode": "promo", "fromSide": "right", "toNode": "promo-2", "toSide": "left"},
+
+    {"id": "e-metrics", "fromNode": "center", "fromSide": "bottom", "toNode": "metrics", "toSide": "top"},
+    {"id": "e-metrics-1", "fromNode": "metrics", "fromSide": "left", "toNode": "metrics-1", "toSide": "top"},
+    {"id": "e-metrics-2", "fromNode": "metrics", "fromSide": "right", "toNode": "metrics-2", "toSide": "top"}
+  ]
+}
