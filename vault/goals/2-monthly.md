@@ -51,7 +51,7 @@ updated: 2026-09-26
 ## NOT Doing This Month
 
 <!-- What are you consciously saying NO to? -->
--
+- Дота (отказаться / резко сократить)
 -
 -
 
@@ -87,7 +87,7 @@ updated: 2026-09-26
 ## Links
 
 - [[0-vision-3y]] - 3-year vision
-- [[1-yearly-2025]] - Annual goals
+- [[1-yearly-2026]] - Annual goals
 - [[3-weekly]] - This week's plan
 
 ---

@@ -120,7 +120,7 @@ updated: 2026-09-26
 ## Links
 
 - [[2-monthly]] - Monthly priorities
-- [[1-yearly-2025]] - Yearly goals
+- [[1-yearly-2026]] - Yearly goals
 - Previous: [[3-weekly-YYYY-WXX]]
 
 ---

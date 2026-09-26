@@ -20,20 +20,23 @@ Curated knowledge that persists across sessions. Part of the 3-layer memory arch
 - Для блога нужны: бот-генератор хуков, парсеры
 
 ### Communication Style
-- Preferred response language: [Russian/English/Mixed]
-- Detail level: [Brief/Detailed]
-- Code comments: [Minimal/Verbose]
+- Preferred response language: Russian
+- Тон: без цензуры, мат — норма, говорить так, как естественно
+- Никакой лести, заискивания, наигранного позитива ("всё заебись") — только чёткая, конкретная картина реального положения дел
+- Detail level: по делу, без прикрас
+- Code comments: N/A
 
 ### Habits
-- Morning routine: [if relevant]
-- Work hours: [e.g., 10:00-19:00]
-- Planning cadence: [weekly/daily]
+- Morning routine: через день — отжимания, приседания, растяжка (пока нерегулярно, вводит в привычку)
+- Work hours: DeFi 1-2ч, блог 1-3ч, здоровье 1-2ч фокусного времени в день
+- Planning cadence: ежедневно (пока настраиваем систему под себя — потом пересмотрим частоту)
 
 ## Key Decisions
 
 | Date | Decision | Context |
 |------|----------|---------|
 | YYYY-MM-DD | Example: Use uv instead of pip | Better dependency management |
+| 2026-09-26 | ТЕСТ-OBSIDIAN-2026-09-26: моя энергия сейчас средняя | Проверка синхронизации vault с Obsidian через git |
 
 ## Active Context
 

@@ -5,12 +5,11 @@ period: 2026-2029
 updated: 2026-09-26
 ---
 
-# Vision 2025-2027
+# Vision 2026-2029
 
 ## Life Mission
 
-<!-- Your life direction in one sentence -->
-<!-- Example: "Build meaningful technology while maintaining balance across health, relationships, and personal growth." -->
+Найти своё место в жизни и занять в ней серьёзный вес — двигаясь через постоянное изучение мира и себя, чтобы однажды по-настоящему собой гордиться.
 
 ---
 
@@ -55,12 +54,12 @@ updated: 2026-09-26
 ### Personal Growth
 
 **3-Year Vision:**
-<!-- What skills, habits, or mindset changes do you want? -->
+Прокачать харизму и коммуникацию — уверенно общаться с людьми, разбираться в продажах и бизнес-навыках, освоить съёмку как ремесло.
 
 **Key Milestones:**
-- [ ] Milestone 1
-- [ ] Milestone 2
-- [ ] Milestone 3
+- [ ] Харизма и уверенная коммуникация с людьми
+- [ ] Навыки продаж и бизнеса
+- [ ] Мастерство съёмки видео
 
 ---
 
@@ -79,12 +78,11 @@ DeFi как стабильный источник доходности: мини
 ### Creativity & Joy
 
 **3-Year Vision:**
-<!-- What brings you joy? How will you nurture it? -->
+Путешествия — главный источник кайфа. Не считает себя творческим по натуре, но готов пробовать разные новые вещи.
 
 **Key Milestones:**
-- [ ] Milestone 1
-- [ ] Milestone 2
-- [ ] Milestone 3
+- [ ] Регулярные путешествия
+- [ ] Пробовать новые творческие форматы (без давления "стать творческим")
 
 ---
 
@@ -99,7 +97,7 @@ DeFi как стабильный источник доходности: мини
 
 ## Links
 
-- [[1-yearly-2025]] - This year's goals
+- [[1-yearly-2026]] - This year's goals
 - [[2-monthly]] - Current month focus
 - [[3-weekly]] - This week's plan
 

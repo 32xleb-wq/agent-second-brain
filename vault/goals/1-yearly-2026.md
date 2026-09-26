@@ -1,32 +1,31 @@
 ---
 type: yearly
-period: YYYY
-updated: YYYY-MM-DD
+period: 2026
+updated: 2026-09-26
 ---
 
-# Goals YYYY
+# Goals 2026
 
 ## Annual Theme
 
-<!-- One word or phrase that defines this year -->
-<!-- Example: "Foundation", "Growth", "Balance" -->
+Запуск — блог, тело, круг людей.
 
 ---
 
 ## Career & Business
 
-### Goal 1: [Your Goal]
+### Goal 1: Блог — минимум 10k подписчиков на YouTube к концу года
 <!-- What do you want to achieve professionally? -->
 
 **Success Metrics:**
-- [ ] Metric 1
-- [ ] Metric 2
+- [ ] Минимум 10 000 подписчиков на YouTube (в идеале — заметно больше)
+- [ ] Регулярный конвейер: снимать и выкладывать без больших провалов
 
 **Quarterly Milestones:**
 - Q1: [milestone]
 - Q2: [milestone]
 - Q3: [milestone]
-- Q4: [milestone]
+- Q4: подведение итогов, минимум 10k на YouTube
 
 ---
 
@@ -43,12 +42,14 @@ updated: YYYY-MM-DD
 
 ## Relationships
 
-### Goal 1: [Your Goal]
+### Goal 1: Встретить Новый год в компании классных людей
 <!-- How do you want to improve your relationships? -->
 
 **Success Metrics:**
-- [ ] Metric 1
-- [ ] Metric 2
+- [ ] Новый год — в компании приятных, "пиздатых" людей (не в одиночестве)
+- [ ] Возможно — есть кто-то на примете (девушка); необязательно, но было бы круто
+
+**Note:** даже если сбудется не всё — уже будет круто.
 
 ---
 
@@ -65,12 +66,12 @@ updated: YYYY-MM-DD
 
 ## Financial
 
-### Goal 1: [Your Goal]
+### Goal 1: Полностью разобрать свою систему в DeFi
 <!-- What financial milestones do you want to reach? -->
 
 **Success Metrics:**
-- [ ] Metric 1
-- [ ] Metric 2
+- [ ] DeFi-стратегия полностью разобрана и понятна (не "как получится", а системно)
+- [ ] Стабильные +20% годовых удержаны
 
 ---
 
