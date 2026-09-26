@@ -48,16 +48,17 @@ logger = logging.getLogger(__name__)
 Runner = Callable[..., subprocess.CompletedProcess]
 
 DEFAULT_TIMEOUT = 1200  # 20 min, matches the old subprocess pipeline
-DEFAULT_STALL_TIMEOUT = 420  # no new pane bytes for this long ⇒ wedged
+DEFAULT_STALL_TIMEOUT = 240  # no new pane bytes for this long ⇒ wedged
 # request_id prefix that marks a turn as maintenance (pipeline, doctor,
 # /process) — such turns are never steering targets for chat input.
 MAINT_PREFIX = "maint-"
-_PANE_WIDTH = "200"
-# Height 50 (not taller): the TUI draws its footer (idle ❯ / bypass line)
-# just below content, so on a tall pane the footer lands mid-screen with a
-# blank bottom — and chrome-region state detection misses it. At 50 the
-# footer sits near the bottom. Long replies are still captured via scrollback.
-_PANE_HEIGHT = "50"
+_PANE_WIDTH = "220"
+# The TUI runs in the alt-screen buffer, so capture-pane can only ever see
+# these visible rows — scrollback/history-limit does not help (see the
+# window-size manual comment in _ensure_locked). 150 gives generous headroom
+# so a long reply's closing marker plus trailing chrome (tips/warnings/
+# footer) can't scroll above the fold before ask() samples it.
+_PANE_HEIGHT = "150"
 # Scrollback lines to capture. NOTE (verified live on tmux 3.6b): `-S -` and
 # large counts like `-S -2000` return EMPTY on this TUI; a modest concrete
 # count works and includes scrollback (pane history ~2000 lines).
@@ -230,6 +231,18 @@ class ClaudeSession:
         )
         # Bigger scrollback so long replies stay within capture range.
         self._tmux("set-option", "-t", self.session_name, "history-limit", "50000")
+        # Claude Code's TUI runs full-screen (alt-screen buffer), so nothing
+        # it prints ever lands in tmux scrollback regardless of history-limit
+        # — capture-pane can only ever see the current visible rows. If any
+        # client later attaches with a smaller terminal, tmux shrinks this
+        # window to match by default, silently shrinking that visible area.
+        # A long reply's closing <<<E:rid>>> marker then scrolls above the
+        # fold once trailing TUI chrome (tips/warnings/footer) is drawn below
+        # it, and is_complete() can never see it again — ask() then waits out
+        # the full stall_timeout on a turn that actually finished in seconds.
+        # window-size manual freezes the window at the size we set here,
+        # independent of whatever attaches.
+        self._tmux("set-option", "-t", self.session_name, "window-size", "manual")
         # Pre-create the transcript owner-only: `cat >>` appends and keeps
         # the mode, while letting tmux create it would use the server umask.
         self._pane_log.touch()
