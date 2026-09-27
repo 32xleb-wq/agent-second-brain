@@ -1,0 +1,18 @@
+[Unit]
+Description=Second Brain Dashboard (local read-only web UI)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/projects/agent-second-brain
+# Invoke the venv's python directly (not `uv run`), matching dbrain-bot.service:
+# a direct exec keeps systemd's tracked PID as the real interpreter, so
+# stop/restart signal the process that is actually listening on the port.
+ExecStart=%h/projects/agent-second-brain/.venv/bin/python -m d_brain.dashboard
+Restart=always
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+Environment=DASHBOARD_PORT=8765
+
+[Install]
+WantedBy=default.target

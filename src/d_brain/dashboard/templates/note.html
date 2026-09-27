@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ note.title if note else "Заметка" }}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{{ back }}">← Назад</a>
+
+  {% if error %}
+  <div class="notice notice-error">Не удалось прочитать <code>{{ rel_path }}</code>: {{ error }}</div>
+  {% elif note.error %}
+  <div class="notice notice-error">Не удалось разобрать <code>{{ rel_path }}</code>: {{ note.error }}</div>
+  {% else %}
+
+  <header class="page-header">
+    <h1>{{ note.title }}</h1>
+    <p class="page-lead dim">{{ rel_path }}</p>
+  </header>
+
+  {% if note.kind == "markdown" %}
+    <article class="note-body">{{ note.html | safe }}</article>
+  {% elif note.kind == "canvas" %}
+    {% if note.texts %}
+    <ul class="plain-list">
+      {% for t in note.texts %}<li>{{ t }}</li>{% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty-text">В этой канвас-заметке нет текстовых узлов.</p>
+    {% endif %}
+  {% endif %}
+
+  {% endif %}
+{% endblock %}

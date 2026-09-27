@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Задачи{% endblock %}
+{% block content %}
+  <header class="page-header">
+    <h1>Задачи</h1>
+    <p class="page-lead">Реальные задачи из <code>goals/3-weekly.md</code> и <code>goals/2-monthly.md</code>.</p>
+  </header>
+
+  {% for m in missing %}
+  <div class="notice notice-info">Источник не найден: <code>{{ m.source_path }}</code> ({{ m.label }}).</div>
+  {% endfor %}
+  {% for e in errors %}
+  <div class="notice notice-error">Не удалось прочитать <code>{{ e.source_path }}</code>: {{ e.error }}</div>
+  {% endfor %}
+
+  {% if not open and not done %}
+    {% if not missing and not errors %}
+    <div class="empty-state">
+      <p class="empty-text">Чек-боксов «- [ ]» в найденных файлах нет — открытых задач пока нет.</p>
+    </div>
+    {% endif %}
+  {% else %}
+
+  <h2 class="section-title">Открытые ({{ open|length }})</h2>
+  {% if open %}
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Задача</th><th>Приоритет</th><th>Срок</th><th>Контекст</th><th>Источник</th></tr></thead>
+      <tbody>
+        {% for t in open %}
+        <tr>
+          <td>{{ t.text }}</td>
+          <td>{{ t.priority }}</td>
+          <td>{{ t.due }}</td>
+          <td class="dim">{{ t.context }}</td>
+          <td><a class="src-link" href="{{ t.note_href }}">{{ t.source_label }}</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty-text">Открытых задач нет.</p>
+  {% endif %}
+
+  <h2 class="section-title">Завершённые ({{ done|length }})</h2>
+  {% if done %}
+  <div class="table-wrap">
+    <table class="data-table data-table-done">
+      <thead><tr><th>Задача</th><th>Приоритет</th><th>Срок</th><th>Контекст</th><th>Источник</th></tr></thead>
+      <tbody>
+        {% for t in done %}
+        <tr>
+          <td class="done-text">{{ t.text }}</td>
+          <td>{{ t.priority }}</td>
+          <td>{{ t.due }}</td>
+          <td class="dim">{{ t.context }}</td>
+          <td><a class="src-link" href="{{ t.note_href }}">{{ t.source_label }}</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty-text">Завершённых задач пока нет.</p>
+  {% endif %}
+
+  {% endif %}
+{% endblock %}

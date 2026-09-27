@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ section.title }}{% endblock %}
+{% block content %}
+  <header class="page-header">
+    <h1>{{ section.title }}</h1>
+    <p class="page-lead">{{ section.lead }}</p>
+  </header>
+
+  <div class="empty-state">
+    <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">{{ section.icon | safe }}</svg>
+    <p class="empty-text">{{ section.body }}</p>
+    <span class="empty-badge">Раздел в разработке</span>
+  </div>
+{% endblock %}

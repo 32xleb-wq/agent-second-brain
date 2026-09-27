@@ -1,0 +1,13 @@
+[Unit]
+Description=Second Brain: one-shot ChatGPT export -> Obsidian text import
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/projects/agent-second-brain/scripts/chatgpt_import
+ExecStart=%h/projects/agent-second-brain/.venv/bin/python run_import.py
+Environment=PYTHONUNBUFFERED=1
+# Resumable + idempotent (state.json keyed by ChatGPT conversation id), so a
+# kill/reboot mid-run is safe: `systemctl --user start` again just continues.
+StandardOutput=append:/home/secondbrain/imports/chatgpt-export/state/systemd.log
+StandardError=append:/home/secondbrain/imports/chatgpt-export/state/systemd.log

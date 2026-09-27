@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+  <header class="page-header">
+    <h1>Второй мозг</h1>
+    <p class="page-lead">Общий обзор. Выберите раздел, чтобы открыть его.</p>
+  </header>
+
+  <div class="card-grid">
+    {% for c in cards %}
+    <a class="card" href="{{ c.path }}">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">{{ c.icon | safe }}</svg>
+      <div class="card-title">{{ c.label }}</div>
+      <div class="card-lead">{{ c.lead }}</div>
+    </a>
+    {% endfor %}
+  </div>
+
+  <h2 class="section-title">Сводка</h2>
+  <div class="summary-grid">
+
+    <div class="summary-card">
+      <div class="summary-head">Открытые задачи <span class="dim-inline">{{ summary.open_tasks_total }}</span></div>
+      {% for e in summary.tasks_errors %}
+      <div class="notice notice-error notice-small">Не удалось прочитать {{ e.source_path }}: {{ e.error }}</div>
+      {% endfor %}
+      {% if summary.open_tasks %}
+      <ul class="plain-list">
+        {% for t in summary.open_tasks %}
+        <li>{{ t.text }} <span class="dim-inline">— {{ t.priority }}</span></li>
+        {% endfor %}
+      </ul>
+      {% elif not summary.tasks_errors %}
+      <p class="empty-text">Открытых задач нет.</p>
+      {% endif %}
+      <a class="src-link" href="/tasks">Все задачи →</a>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-head">Последние DeFi-записи</div>
+      {% if summary.defi_error %}
+      <div class="notice notice-error notice-small">{{ summary.defi_error }}</div>
+      {% elif not summary.defi_exists %}
+      <p class="empty-text">Файл finances/defi-log.md не найден.</p>
+      {% elif summary.defi_rows %}
+      <ul class="plain-list">
+        {% for r in summary.defi_rows %}
+        <li>{{ r.date }} — {{ r.note }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="empty-text">Записей в журнале нет.</p>
+      {% endif %}
+      <a class="src-link" href="/defi">Раздел DeFi →</a>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-head">Последние материалы</div>
+      {% if summary.content_items %}
+      <ul class="plain-list">
+        {% for it in summary.content_items %}
+        <li><a class="src-link" href="{{ it.note_href }}">{{ it.title }}</a> <span class="dim-inline">— {{ it.type }}</span></li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="empty-text">Материалов пока нет.</p>
+      {% endif %}
+      <a class="src-link" href="/content">Раздел Контент →</a>
+    </div>
+
+  </div>
+{% endblock %}

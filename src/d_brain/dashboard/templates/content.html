@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Контент{% endblock %}
+{% block content %}
+  <header class="page-header">
+    <h1>Контент</h1>
+    <p class="page-lead">Материалы из <code>blog/</code>, <code>thoughts/ideas/</code> и <code>canvases/</code>.</p>
+  </header>
+
+  {% for g in groups %}
+  <h2 class="section-title">{{ g.label }} <span class="dim-inline">{{ g.source_path }}/</span></h2>
+  {% if not g.exists %}
+    <p class="empty-text">Папка <code>{{ g.source_path }}</code> не найдена — материалов такого типа пока нет.</p>
+  {% elif g.error %}
+    <div class="notice notice-error">Не удалось прочитать <code>{{ g.source_path }}</code>: {{ g.error }}</div>
+  {% elif not g.notes %}
+    <p class="empty-text">Пока пусто.</p>
+  {% else %}
+  <div class="card-grid">
+    {% for it in g.notes %}
+    <a class="card" href="{{ it.note_href }}">
+      <div class="card-title">{{ it.title }}</div>
+      {% if it.date %}<div class="card-lead">{{ it.date }}</div>{% endif %}
+      {% if it.excerpt %}<div class="card-lead">{{ it.excerpt }}</div>{% endif %}
+      {% if it.tags %}<div class="tag-row">{% for tag in it.tags %}<span class="tag">{{ tag }}</span>{% endfor %}</div>{% endif %}
+      <div class="card-lead dim">{{ it.source_path }}</div>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endfor %}
+{% endblock %}

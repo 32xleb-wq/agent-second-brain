@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Second Brain{% endblock %} — Second Brain</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span class="brand-name">Second&nbsp;Brain</span>
+      </div>
+      <nav class="side-nav">
+        {% for item in nav %}
+        <a class="side-link {% if item.key == active %}active{% endif %}" href="{{ item.path }}">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{{ item.icon | safe }}</svg>
+          <span>{{ item.label }}</span>
+        </a>
+        {% endfor %}
+      </nav>
+      <div class="sidebar-footer">Версия 1 · черновой каркас</div>
+    </aside>
+
+    <main class="content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <nav class="bottom-nav">
+    {% for item in nav %}
+    <a class="bottom-link {% if item.key == active %}active{% endif %}" href="{{ item.path }}">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{{ item.icon | safe }}</svg>
+      <span>{{ item.label }}</span>
+    </a>
+    {% endfor %}
+  </nav>
+</body>
+</html>

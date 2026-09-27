@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}DeFi{% endblock %}
+{% block content %}
+  <header class="page-header">
+    <h1>DeFi</h1>
+    <p class="page-lead">Из <code>finances/defi-log.md</code>{% if exists %} — <a class="src-link" href="{{ note_href }}">открыть заметку целиком</a>{% endif %}.</p>
+  </header>
+
+  {% if not exists %}
+  <div class="notice notice-info">Файл <code>finances/defi-log.md</code> не найден в vault — записей пока нет.</div>
+  {% elif error %}
+  <div class="notice notice-error">Не удалось прочитать <code>finances/defi-log.md</code>: {{ error }}</div>
+  {% else %}
+
+  {% for t in tables %}
+  <h2 class="section-title">{{ t.title }}</h2>
+  {% if t.empty %}
+    <p class="empty-text">{{ t.empty_note or "пока пусто" }}</p>
+  {% else %}
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr>{% for h in t.headers %}<th>{{ h }}</th>{% endfor %}</tr></thead>
+      <tbody>
+        {% for row in t.rows %}
+        <tr>{% for cell in row %}<td class="{% if 'уточн' in cell or cell == 'не указано' %}dim{% endif %}">{{ cell }}</td>{% endfor %}</tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  {% endfor %}
+
+  {% for bs in bullet_sections %}
+  <h2 class="section-title">{{ bs.title }}</h2>
+  <ul class="plain-list">
+    {% for entry in bs.entries %}<li>{{ entry }}</li>{% endfor %}
+  </ul>
+  {% endfor %}
+
+  <h2 class="section-title">Журнал операций <span class="dim-inline">(история, не текущие балансы)</span></h2>
+  {% if journal_rows %}
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Дата</th><th>Платформа</th><th>Актив/пара</th><th>Действие</th><th>Сумма</th><th>Примечание</th><th>Источник</th></tr></thead>
+      <tbody>
+        {% for r in journal_rows %}
+        <tr>
+          <td>{{ r.date }}</td>
+          <td class="dim">{{ r.platform }}</td>
+          <td class="dim">{{ r.asset }}</td>
+          <td>{{ r.action }}</td>
+          <td>{{ r.amount }}</td>
+          <td>{{ r.note }}</td>
+          <td><a class="src-link" href="{{ r.note_href }}">открыть</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty-text">Записей в журнале операций не найдено.</p>
+  {% endif %}
+
+  {% endif %}
+{% endblock %}
