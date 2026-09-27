@@ -35,7 +35,6 @@ from pathlib import Path
 from d_brain.services.tmux_parse import (
     PaneState,
     classify_state,
-    extract_partial_reply,
     extract_reply,
     has_survey_prompt,
     is_complete,
@@ -431,10 +430,6 @@ class ClaudeSession:
 
         wrap=True (default) appends the marker instruction and extracts the
         reply between the marker pair — the reliable path for model turns.
-        If the closing marker never arrives but the turn confirmably ends
-        (pane idle for two consecutive polls), the reply after the CURRENT
-        turn's opening marker is salvaged instead of burning stall_timeout
-        and returning "session stalled" with the answer lost.
         wrap=False types the prompt verbatim; completion is the pane sitting
         idle for two consecutive polls and the reply is the chrome-stripped
         pane text (best effort, may include the input echo).
@@ -469,7 +464,6 @@ class ClaudeSession:
             last_log_size = self._pane_log_size()
             deadline = self._clock() + timeout
             idle_streak = 0
-            wrap_idle_streak = 0
             while self._clock() < deadline:
                 cap = self._capture()
                 state = classify_state(cap)
@@ -483,36 +477,6 @@ class ClaudeSession:
                     if is_complete(cap, rid):
                         self._inflight.unlink(missing_ok=True)
                         return AskResult("ok", reply=extract_reply(cap, rid))
-                    # Recovery path (incident 2026-09-27): the model prints
-                    # <<<R:rid>>> + its answer, the working spinner ends, but
-                    # the closing <<<E:rid>>> never arrives — is_complete()
-                    # stays False forever and the turn would otherwise burn
-                    # the full stall_timeout and surface as a lost reply.
-                    # Debounced like the wrap=False idle path (2 consecutive
-                    # idle polls) so a transient blank frame mid-turn can't
-                    # trigger it before the turn has truly ended.
-                    if is_idle(cap):
-                        wrap_idle_streak += 1
-                        if wrap_idle_streak >= 2:
-                            partial = extract_partial_reply(cap, rid)
-                            if partial is not None:
-                                self._inflight.unlink(missing_ok=True)
-                                logger.warning(
-                                    "closing marker <<<E:%s>>> missing for %s; "
-                                    "recovered partial reply on confirmed idle",
-                                    rid,
-                                    log_id,
-                                )
-                                return AskResult(
-                                    "ok",
-                                    reply=partial,
-                                    detail=(
-                                        f"missing closing marker <<<E:{rid}>>>; "
-                                        "recovered partial reply"
-                                    ),
-                                )
-                    else:
-                        wrap_idle_streak = 0
                 elif is_idle(cap):
                     idle_streak += 1
                     if idle_streak >= 2:

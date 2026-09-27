@@ -95,43 +95,6 @@ def is_complete(text: str, rid: str) -> bool:
     return extract_reply(text, rid) is not None
 
 
-# Post-turn "done" summary the TUI briefly shows after work finishes, e.g.
-# "✻ Churned for 14s" or "✳ Cogitated for 3s (1.2k tokens)" — chrome, not
-# part of the model's answer. Only stripped in extract_partial_reply()
-# (never in the shared strip_chrome()) so a normal, fully-marked reply can't
-# have a legitimate "for Ns" sentence eaten by it.
-_COMPLETION_NOTE_RE = re.compile(r"^\s*[✻✢✳·]\s+\S.*\bfor\s+\d+s\b")
-
-
-def extract_partial_reply(text: str, rid: str) -> str | None:
-    """Recover the answer when the closing ``<<<E:rid>>>`` marker never
-    arrived (the model dropped it) but the turn has otherwise finished.
-
-    Only ever called by ask() once the pane is confirmed idle (spinner gone,
-    bare prompt back), and only for the CURRENT turn's rid — a fresh uuid
-    per ask() call, so stale markers from earlier turns can never match.
-    Takes the text after the LAST line-anchored ``<<<R:rid>>>`` (in case the
-    model reprints its own opening marker); bails (None) if a line-anchored
-    end marker follows after all — that's the well-formed-pair case and
-    belongs to extract_reply() — or if nothing is left once chrome is
-    stripped.
-    """
-    _require_rid(rid)
-    opens = list(_line_anchored(rid, "R").finditer(text))
-    if not opens:
-        return None
-    body = text[opens[-1].end() :]
-    if _line_anchored(rid, "E").search(body):
-        return None
-    kept = [
-        ln
-        for ln in body.splitlines()
-        if not _CHROME_LINE_RE.search(ln) and not _COMPLETION_NOTE_RE.search(ln)
-    ]
-    reply = "\n".join(kept).strip()
-    return reply or None
-
-
 # Signature tables. Order of checks in classify_state encodes priority.
 # TRUST anchors on the numbered menu (structural), not the prose sentence,
 # so the model describing the trust prompt cannot trigger it.

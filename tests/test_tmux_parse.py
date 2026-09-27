@@ -15,6 +15,7 @@ import pytest
 from d_brain.services.tmux_parse import (
     PaneState,
     classify_state,
+    extract_partial_reply,
     extract_reply,
     is_complete,
 )
@@ -478,3 +479,94 @@ def test_is_working_false_at_idle():
     from d_brain.services.tmux_parse import is_working
 
     assert not is_working("❯\n  ⏵⏵ bypass permissions on (shift+tab to cycle)\n")
+
+
+# ── extract_partial_reply (incident 2026-09-27: dropped closing marker) ───
+
+
+def test_extract_partial_reply_recovers_missing_closing_marker():
+    """Reproduces the live incident: open marker + answer printed, the
+    "Churned for Ns" completion note follows, but <<<E:rid>>> never arrives.
+    The pane is otherwise idle (bare ❯, bypass footer, no spinner)."""
+    rid = "lost0001"
+    pane = (
+        f"⏺ <<<R:{rid}>>>\n"
+        "  Here is the answer you asked for.\n"
+        "✻ Churned for 14s\n"
+        "────────────────────\n❯\n────────────────────\n"
+        "  hello | Opus 4.8 (1M context) | ~/p\n"
+        "  ⏵⏵ bypass permissions on (shift+tab to cycle)\n"
+    )
+    assert extract_partial_reply(pane, rid) == "Here is the answer you asked for."
+
+
+def test_extract_partial_reply_none_when_pair_is_well_formed():
+    """A normal, fully-marked reply must go through extract_reply(), not the
+    fallback — extract_partial_reply() must decline (return None)."""
+    rid = "ok000001"
+    pane = f"<<<R:{rid}>>>\nPONG\n<<<E:{rid}>>>\n❯\n"
+    assert extract_partial_reply(pane, rid) is None
+
+
+def test_extract_partial_reply_none_without_open_marker():
+    assert extract_partial_reply("just chrome\n❯\n", "nomark01") is None
+
+
+def test_extract_partial_reply_ignores_other_rid():
+    """A different turn's dropped marker must not leak into this rid."""
+    rid = "aaaa1111"
+    pane = f"⏺ <<<R:aaaa2222>>>\nsome other answer\n✻ Churned for 3s\n❯\n"
+    assert extract_partial_reply(pane, rid) is None
+
+
+def test_extract_partial_reply_uses_last_open_marker_when_repeated():
+    """If the model reprints its own opening marker, only text after the
+    LAST occurrence is salvaged (mirrors extract_reply's rightmost-pairing)."""
+    rid = "twoopen1"
+    pane = (
+        f"<<<R:{rid}>>>\nfirst attempt, never closed\n"
+        f"<<<R:{rid}>>>\nsecond attempt, also dropped its closer\n"
+        "✻ Churned for 5s\n❯\n"
+    )
+    assert extract_partial_reply(pane, rid) == "second attempt, also dropped its closer"
+
+
+def test_extract_partial_reply_none_when_last_open_has_well_formed_pair():
+    """A dangling first attempt followed by a properly closed second pair:
+    the well-formed pair (using the LAST open marker) is extract_reply()'s
+    job — extract_partial_reply() must decline."""
+    rid = "twoopen2"
+    pane = (
+        f"<<<R:{rid}>>>\nfirst attempt, never closed\n"
+        f"<<<R:{rid}>>>\nsecond attempt\n<<<E:{rid}>>>\n❯\n"
+    )
+    assert extract_partial_reply(pane, rid) is None
+
+
+def test_extract_partial_reply_none_when_only_chrome_remains():
+    """Nothing has actually been produced yet — no marker at all (still
+    echoing the prompt) — must not fabricate an empty "answer"."""
+    rid = "empty001"
+    pane = "❯ reply, wrap with markers\n  ✻ Working…  (esc to interrupt)\n"
+    assert extract_partial_reply(pane, rid) is None
+
+
+def test_extract_partial_reply_strips_multiple_chrome_lines():
+    rid = "multi001"
+    pane = (
+        f"<<<R:{rid}>>>\n"
+        "line one\n"
+        "line two\n"
+        "✻ Churned for 9s\n"
+        "────────────────────\n"
+        "❯\n"
+        "────────────────────\n"
+        "  hello | Opus 4.8 (1M context) | ~/p\n"
+        "  ⏵⏵ bypass permissions on (shift+tab to cycle)\n"
+    )
+    assert extract_partial_reply(pane, rid) == "line one\nline two"
+
+
+def test_extract_partial_reply_empty_rid_raises():
+    with pytest.raises(ValueError):
+        extract_partial_reply("anything", "")

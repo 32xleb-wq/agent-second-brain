@@ -281,6 +281,73 @@ def test_ask_long_silent_work_not_interrupted(tmp_path, clock):
     assert not any(c[-1] == "C-c" for c in fake.sent_keys())
 
 
+def _missing_closer(rid: str, reply: str = "PONG") -> str:
+    """Open marker + answer printed, spinner gone, but <<<E:rid>>> never
+    arrives — reproduces the 2026-09-27 lost-reply incident."""
+    return (
+        f"⏺ <<<R:{rid}>>>\n"
+        f"  {reply}\n"
+        "✻ Churned for 14s\n"
+        "────────────────────\n❯\n────────────────────\n"
+        "  hello | Opus 4.8 (1M context) | ~/p\n"
+        "  ⏵⏵ bypass permissions on (shift+tab to cycle)\n"
+    )
+
+
+def test_ask_recovers_reply_when_closing_marker_is_dropped(tmp_path, clock):
+    """The documented incident: without the fallback this would burn the
+    full stall_timeout and return status="error" with the answer lost."""
+    rid = "lost0001"
+    idle = _missing_closer(rid)
+    # Debounced over 2 consecutive idle polls, like the wrap=False path.
+    fake = FakeTmux([READY, THINKING, idle, idle], exists=True)
+    s = make_session(tmp_path, fake, clock, rid=rid)
+    res = s.ask("ping", timeout=60)
+    assert res.ok
+    assert res.reply == "PONG"
+    assert res.status == "ok"
+    assert not (tmp_path / ".dbrain" / "inflight").exists()
+    assert not any(c[-1] in ("Escape", "C-c") for c in fake.sent_keys())
+
+
+def test_ask_normal_two_marker_reply_still_takes_fast_path(tmp_path, clock):
+    """Regression guard: a well-formed pair must still return on the FIRST
+    idle observation via is_complete(), never waiting on the debounce added
+    for the missing-closer fallback."""
+    rid = "abcd0099"
+    fake = FakeTmux([READY, THINKING, _complete(rid)], exists=True)
+    s = make_session(tmp_path, fake, clock, rid=rid)
+    res = s.ask("ping", timeout=60)
+    assert res.ok
+    assert res.reply == "PONG"
+    # Only 3 captures were scripted (READY, THINKING, complete) — if the
+    # fallback path required extra debounce polls this would need a 4th.
+    assert len(fake._captures) <= 1  # fully consumed except the sticky last
+
+
+def test_ask_does_not_recover_reply_while_turn_still_active(tmp_path, clock):
+    """The spinner is visible ⇒ turn is NOT confirmed done — must not treat
+    the still-streaming text after the open marker as the final answer."""
+    rid = "still001"
+    streaming = f"⏺ <<<R:{rid}>>>\n  partial so far...\n{THINKING}"
+    fake = FakeTmux([READY, streaming, streaming], exists=True)
+    s = make_session(tmp_path, fake, clock, rid=rid)
+    res = s.ask("ping", timeout=3)
+    assert res.status == "timeout"
+
+
+def test_ask_does_not_recover_stray_marker_from_wrong_rid(tmp_path, clock):
+    """A dropped closer belonging to some OTHER turn's rid must never leak
+    into this ask() call's result."""
+    rid = "myrid001"
+    other_rid_reply = _missing_closer("otherrid")
+    fake = FakeTmux([READY, THINKING, other_rid_reply, other_rid_reply], exists=True)
+    s = make_session(tmp_path, fake, clock, rid=rid)
+    res = s.ask("ping", timeout=6)
+    assert res.status in ("timeout", "error")
+    assert res.reply is None
+
+
 def test_ask_returns_error_when_ensure_fails(tmp_path, clock):
     """ensure_session failing must surface as AskResult('error'), never an
     exception out of ask() (C2)."""
