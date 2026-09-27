@@ -16,7 +16,14 @@ KillMode=process
 # it must not trigger the OnFailure= alert.
 SuccessExitStatus=143 SIGTERM
 WorkingDirectory=%h/projects/dbrain
-ExecStart=%h/.local/bin/uv run python -m d_brain
+# Invoke the venv's python directly rather than `uv run ...`: uv forks the
+# real interpreter as a CHILD process instead of exec'ing into it, so with
+# KillMode=process (required above) systemd only signals the uv wrapper on
+# stop/restart — the actual python process is left orphaned, still holding
+# pane.lock and still polling Telegram, fighting the freshly started
+# instance. Running the venv interpreter directly makes it the tracked main
+# PID with no wrapper layer to leak.
+ExecStart=%h/projects/dbrain/.venv/bin/python -m d_brain
 Restart=always
 RestartSec=10
 Environment=PYTHONUNBUFFERED=1
