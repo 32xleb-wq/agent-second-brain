@@ -1,0 +1,72 @@
+{
+  "collapse-filter": false,
+  "search": "-tag:#general",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "tag:#health",
+      "color": {
+        "a": 1,
+        "rgb": 14042437
+      }
+    },
+    {
+      "query": "tag:#content",
+      "color": {
+        "a": 1,
+        "rgb": 3900100
+      }
+    },
+    {
+      "query": "tag:#growth",
+      "color": {
+        "a": 1,
+        "rgb": 8280002
+      }
+    },
+    {
+      "query": "tag:#relationships",
+      "color": {
+        "a": 1,
+        "rgb": 14711609
+      }
+    },
+    {
+      "query": "tag:#defi",
+      "color": {
+        "a": 1,
+        "rgb": 3055211
+      }
+    },
+    {
+      "query": "tag:#business",
+      "color": {
+        "a": 1,
+        "rgb": 13214247
+      }
+    },
+    {
+      "query": "tag:#ai-tools",
+      "color": {
+        "a": 1,
+        "rgb": 35195
+      }
+    }
+  ],
+  "collapse-display": true,
+  "showArrow": false,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": true,
+  "centerStrength": 0.5,
+  "repelStrength": 10,
+  "linkStrength": 1,
+  "linkDistance": 250,
+  "scale": 1,
+  "close": false
+}
