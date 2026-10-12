@@ -1,0 +1,142 @@
+[
+  {
+    "message": "cfad0bae-ebf3-4790-97f6-8fb718bd64c2",
+    "reference": "file-4iaUuQYZaadwJnmnKBvwDw",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "230c6a36-77e9-4bb3-8408-568235f9bb5a",
+    "reference": "file-CKM49pdxfaewSuKXDPsHkK",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "5591baf9-2c79-4156-a88a-e5091ac3ce22",
+    "reference": "file-1dnszZSdbWt3zyjzLQZPou",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "3c6464a0-ac1c-4463-927e-5c2ced90c77f",
+    "reference": "defi_portfolio_template.xlsx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "96d73121-786f-4a52-8d2b-58c2b0579269",
+    "reference": "file-EzU9iDpWdgidou5jFztP4n",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "926a9d6f-eecb-442f-8fb1-df199ded58e1",
+    "reference": "file-Mwm3KxkWKRxKP339zoSCNU",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "90477e54-b3f8-49f9-ad27-205d00b2ea38",
+    "reference": "file-U1We4V7EgbZpJfQAdKAho7",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "1643e280-546a-4bdf-a36c-cd22e3c31286",
+    "reference": "pasha_brand_base_ru.md",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "bb9a7510-3361-4fcd-a029-2fe674d33b79",
+    "reference": "file_0000000022bc7207955e7406b2dd8ba8",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "b26f44c6-e64c-4724-9249-53a391468524",
+    "reference": "file_000000004e8c7207a45d08c1bd407bf2",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "b8463988-7021-4f0c-814e-8c4f7e471e77",
+    "reference": "file_00000000bb407208b1e61b4d14ece1c1",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "0431ec5e-4329-4543-9648-094c8e364401",
+    "reference": "file_000000007950720b88f34234a580a5fc",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "7afb481c-8d81-4967-8004-244ac6d4ee58",
+    "reference": "file_00000000f768720b8ebff5b42bbdbe74",
+    "reason": "Нет файла в экспорте"
+  },
+  {
+    "message": "7a8665d2-794e-4365-a89d-eb263b26d593",
+    "reference": "Недельный_трекер.xlsx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "7be7aefc-0535-43ec-87bd-c6b5add095bf",
+    "reference": "Недельный_трекер_вертикальный.xlsx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "92974b80-87ba-4c2b-8353-198b5642e359",
+    "reference": "Трекер_недели_v2.xlsx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "3bdc4ab1-66a0-462f-a286-0c7d0cf3e10d",
+    "reference": "perevod_laboratornogo_otcheta_ru.pdf",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "aa09f9c1-36b0-44ca-b839-546b9ec6b54b",
+    "reference": "analizy_31_07_2026_rus.docx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "f84f702a-973f-40b2-ab1f-74510b99d3d7",
+    "reference": "yadro_razrabotki_adaptive_life_os.docx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "f84f702a-973f-40b2-ab1f-74510b99d3d7",
+    "reference": "yadro_razrabotki_adaptive_life_os.md",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "b783f5de-2d81-450e-8fb6-8eba4392e2c2",
+    "reference": "Ядро_чата_промежуточная_версия.docx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "c645fd1d-c6d5-4ea8-aae2-4d65efc9e770",
+    "reference": "hooks_master_system_v1.docx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "c645fd1d-c6d5-4ea8-aae2-4d65efc9e770",
+    "reference": "master_prompt_hooks_ru.txt",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "27110f3d-9db2-4a41-8212-324d9770137d",
+    "reference": "master_hooks_scenarios_protocol_ru.docx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "27110f3d-9db2-4a41-8212-324d9770137d",
+    "reference": "master_prompt_hooks_bot_ru.txt",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "95c60310-1299-46a1-9243-9a18af600e90",
+    "reference": "Master_Hooks_Scenarios_Playbook_RU.docx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "b175be98-7e07-4f61-a5df-c167a4187a66",
+    "reference": "hooks_master_system_v1.docx",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  },
+  {
+    "message": "b175be98-7e07-4f61-a5df-c167a4187a66",
+    "reference": "hooks_master_prompt_v1.txt",
+    "reason": "Файл по sandbox-ссылке не найден однозначно"
+  }
+]

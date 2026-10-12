@@ -1,0 +1,100 @@
+{
+  "collapse-filter": false,
+  "search": "path:\"02 Суть\"",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": true,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "tag:#здоровье",
+      "color": {
+        "a": 1,
+        "rgb": 4431943
+      }
+    },
+    {
+      "query": "tag:#блог -tag:#здоровье",
+      "color": {
+        "a": 1,
+        "rgb": 16096779
+      }
+    },
+    {
+      "query": "tag:#сценарии -tag:#здоровье -tag:#блог",
+      "color": {
+        "a": 1,
+        "rgb": 16478597
+      }
+    },
+    {
+      "query": "tag:#съёмка -tag:#здоровье -tag:#блог -tag:#сценарии",
+      "color": {
+        "a": 1,
+        "rgb": 16347926
+      }
+    },
+    {
+      "query": "tag:#идеи -tag:#здоровье -tag:#блог -tag:#сценарии -tag:#съёмка",
+      "color": {
+        "a": 1,
+        "rgb": 16436245
+      }
+    },
+    {
+      "query": "tag:#личная-платформа -tag:#здоровье -tag:#блог -tag:#сценарии -tag:#съёмка -tag:#идеи",
+      "color": {
+        "a": 1,
+        "rgb": 440020
+      }
+    },
+    {
+      "query": "tag:#бизнес -tag:#здоровье -tag:#блог -tag:#сценарии -tag:#съёмка -tag:#идеи -tag:#личная-платформа",
+      "color": {
+        "a": 1,
+        "rgb": 3900150
+      }
+    },
+    {
+      "query": "tag:#финансы -tag:#здоровье -tag:#блог -tag:#сценарии -tag:#съёмка -tag:#идеи -tag:#личная-платформа -tag:#бизнес",
+      "color": {
+        "a": 1,
+        "rgb": 6514417
+      }
+    },
+    {
+      "query": "tag:#размышления -tag:#здоровье -tag:#блог -tag:#сценарии -tag:#съёмка -tag:#идеи -tag:#личная-платформа -tag:#бизнес -tag:#финансы",
+      "color": {
+        "a": 1,
+        "rgb": 10980346
+      }
+    },
+    {
+      "query": "tag:#самопознание -tag:#здоровье -tag:#блог -tag:#сценарии -tag:#съёмка -tag:#идеи -tag:#личная-платформа -tag:#бизнес -tag:#финансы -tag:#размышления",
+      "color": {
+        "a": 1,
+        "rgb": 14239471
+      }
+    },
+    {
+      "query": "tag:#дневник -tag:#здоровье -tag:#блог -tag:#сценарии -tag:#съёмка -tag:#идеи -tag:#личная-платформа -tag:#бизнес -tag:#финансы -tag:#размышления -tag:#самопознание",
+      "color": {
+        "a": 1,
+        "rgb": 9741240
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": false,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": false,
+  "centerStrength": 0.15,
+  "repelStrength": 12,
+  "linkStrength": 1,
+  "linkDistance": 200,
+  "scale": 1,
+  "close": false
+}
