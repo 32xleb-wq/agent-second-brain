@@ -25,10 +25,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 
-# Новая личная база (объединение ChatGPT-пакета и пробной версии) — личные данные, не продукт.
-# Текст/ссылки идут в git (для git-синка с Obsidian на Mac), вложения слишком большие для git — передаются напрямую (rsync).
-/Личная база — новая/80 Вложения/
-
 # Vault personal data (never commit these)
 vault/daily/
 vault/contacts/
@@ -39,6 +35,11 @@ vault/.graph/
 vault/business/
 vault/projects/
 vault/thoughts/
+
+# Вложения объединённой базы (795 МБ, ChatGPT-пакет + пробная версия) — слишком
+# большие для git без LFS. Текст/ссылки/02 Суть/03 Переписка идут в git как
+# обычно, вложения передаются напрямую (rsync) на клиент с Obsidian.
+vault/80 Вложения/
 
 # Local agent-skill installs (npx/pnpm skills add) — dev tooling, not the
 # product. Anchored to the repo root: vault/.claude/ IS the product.

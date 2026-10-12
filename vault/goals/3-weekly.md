@@ -1,7 +1,7 @@
 ---
 type: weekly
-week: 2026-W39
-updated: 2026-09-26
+week: 2026-W42
+updated: 2026-10-12
 ---
 
 # Weekly Focus
@@ -9,7 +9,7 @@ updated: 2026-09-26
 ## ONE Big Thing
 
 > **If I accomplish nothing else, I will:**
-> Снять и выложить минимум 1 видео (в идеале длинное разговорное) до конца недели
+>
 
 <!-- This is read by the bot during daily processing -->
 
@@ -17,9 +17,9 @@ updated: 2026-09-26
 
 ## Week at a Glance
 
-**Week:** 39 of 52
-**Energy Level:** Medium
-**Available Hours:** ~3-7 ч фокусной работы в день (DeFi 1-2ч, блог 1-3ч, здоровье 1-2ч)
+**Week:** 42 of 52
+**Energy Level:**
+**Available Hours:**
 
 ---
 
@@ -27,20 +27,15 @@ updated: 2026-09-26
 
 ### Must Do (Non-negotiable)
 
-- [ ] Снять и выложить видео (минимум 1) — Связь: [[2-monthly#Priority 1]]
-- [ ] Ежедневно (Пн–Пт): DeFi работа
-- [ ] Ежедневно (Пн–Пт): сценарий или хуки для видео
+- [ ]
 
 ### Should Do (Important)
 
-- [ ] Доделать бота для генерации хуков
-- [ ] Настроить парсеры под контент
-- [ ] Написать Виталию (Дананг) — предложить помощь, замутить тусовку
+- [ ]
 
 ### Could Do (If time permits)
 
-- [ ] Task 1
-- [ ] Task 2
+- [ ]
 
 ---
 
@@ -48,37 +43,27 @@ updated: 2026-09-26
 
 ### Monday
 
-- [ ] Task 1
-- [ ] Task 2
+- [ ]
 
 ### Tuesday
 
-- [ ] Task 1
-- [ ] Task 2
+- [ ]
 
 ### Wednesday
 
-- [ ] Task 1
-- [ ] Task 2
+- [ ]
 
 ### Thursday
 
-- [ ] Task 1
-- [ ] Task 2
+- [ ]
 
 ### Friday
 
-- [ ] Task 1
-- [ ] Task 2
+- [ ]
 
 ### Weekend
 
-**Воскресенье, 27.09:**
-- [ ] 09:00 — сообщение врачу (напоминание уже стоит)
-- [ ] 12:00-13:00 — DeFi
-- [ ] 13:00-14:00 — подготовка к рилсам (сценарии)
-- [ ] 14:00-15:00 — съёмки
-- [ ] 15:00-17:00 — настройка своего приложения / продолжение работы над структурой (ИИ-агенты, автоматизация)
+- [ ]
 
 ---
 
@@ -125,8 +110,7 @@ updated: 2026-09-26
 
 - [[2-monthly]] - Monthly priorities
 - [[1-yearly-2026]] - Yearly goals
-- Previous: [[3-weekly-YYYY-WXX]]
 
 ---
 
-*Week Started: YYYY-MM-DD*
+*Week Started: 2026-10-12*
