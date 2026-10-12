@@ -25,6 +25,9 @@ node_modules/
 .DS_Store
 Thumbs.db
 
+# Новая личная база (объединение ChatGPT-пакета и пробной версии) — личные данные, не продукт
+/Личная база — новая/
+
 # Vault personal data (never commit these)
 vault/daily/
 vault/contacts/
