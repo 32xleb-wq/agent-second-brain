@@ -1,28 +1,32 @@
-# About [Your Name]
+# About Паша Тейков
 
 ## Who I Am
-[Your Name], [age]. [Your role/title] at [Your Company].
+Паша Тейков (блог-псевдоним), ~40 лет. Живёт в Хойане/Дананге, Вьетнам.
 
 ## What I Do
-- [Main business activity]
-- [Side projects/interests]
-
-## My Team
-| Name | Role |
-|------|------|
-| [Your Name] | [Your Role] |
-| [Team Member] | [Their Role] |
+- DeFi — трейдинг/фарминг доходности в крипте (Pendle/Morpho loop, Kamino, прочие пулы)
+- Личный медиа-проект «170 дней до 40» — YouTube + Instagram Reels о трансформации (тело, гормоны, психика, быт)
 
 ## Working Style
-- Timezone: [Your Timezone]
-- Working hours: [Your preferred hours]
-- Languages: [Your languages]
+- Timezone: UTC+7 (Asia/Ho_Chi_Minh)
+- Languages: русский (ответы — по-русски, без цензуры, мат — норма)
+- Длинные ответы — не простынёй в чат, сохранять файлом и слать как документ
 
 ## Values
-- [Value 1]
-- [Value 2]
-- [Value 3]
+- Прожитый опыт и искренний голос важнее глянцевой подачи
+- Решение прокрастинации по здоровью — срочно, "цена решения — это жизнь"
+- Готовые open-source решения вместо написания с нуля; vibe-coding для доработки
 
-## Key Clients/Projects
-- [Client/Project 1] — [Brief description]
-- [Client/Project 2] — [Brief description]
+## Hot Projects
+- Блог/YouTube/Reels — сериал «170 дней до 40» (5 линий контента: трансформация, разбор организма, БАДы, голова, жизнь в процессе)
+- Здоровье — полное обследование (анализы, УЗИ, ФГДС, колоноскопия, уролог), вопрос ГЗТ, снижение веса (94кг → 86-88кг)
+- DeFi-портфель (Kamino, Pendle/Morpho, UltraSolid)
+- Личная платформа/Adaptive Life OS — этот Telegram-бот + Obsidian как база знаний
+
+## Key People
+| Name | Role |
+|------|------|
+| Виталий | Знакомый в Дананге |
+| Миша | Продюсер блога (монтаж) |
+
+Полный профиль и текущий фокус — всегда в `vault/MEMORY.md`, это источник истины; этот файл — справочный контекст для классификации.

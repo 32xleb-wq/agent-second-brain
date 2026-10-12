@@ -276,9 +276,9 @@ business/
 
 ## Classification
 
-task → checklist entry in daily/project notes
-idea/reflection/learning → thoughts/ (see references/classification.md)
-client/project mention → link to Business/Projects + create task if actionable
+task → checklist entry in daily/
+значимая мысль по одной из 11 тем → дополнить `02 Суть/{Тема}.md` (см. references/classification.md)
+бытовая/разговорная реплика без сдвига темы → остаётся только в daily/, в 02 Суть не копируется
 
 ## Projects Context Integration
 
@@ -364,12 +364,23 @@ When creating tasks, prefer PROCESS over OUTCOME formulations.
 
 See: references/process-goals.md for patterns and examples.
 
-## Thought Categories
+## Thought Categories (11 тем личной базы, см. references/classification.md)
 
-💡 idea → thoughts/ideas/
-🪞 reflection → thoughts/reflections/
-🎯 project → thoughts/projects/
-📚 learning → thoughts/learnings/
+🩺 здоровье → `02 Суть/Здоровье и биохакинг.md`
+📣 блог → `02 Суть/Блог и личный бренд.md`
+🎬 сценарии → `02 Суть/Сценарии, хуки и контент-план.md`
+📷 съёмка → `02 Суть/Съёмка, монтаж и оборудование.md`
+💡 идеи → `02 Суть/Банк идей и новые проекты.md`
+🧩 личная-платформа → `02 Суть/Adaptive Life OS и личная платформа.md`
+🧪 бизнес → `02 Суть/Бизнес-гипотезы и поставщики.md`
+💰 финансы → `02 Суть/DeFi, портфель и криптовалюты.md`
+🪞 размышления → `02 Суть/Мысли, ценности и философия.md`
+🔮 самопознание → `02 Суть/Дизайн человека, матрица, астрология и ба-цзы.md`
+📓 дневник → `02 Суть/Дневник, планы и привычки.md`
+
+Старые категории (idea/reflection/project/learning → thoughts/) и весь блок Business/Projects/
+Contacts ниже — нетронутый шаблон инструмента (placeholder "[Your Name]"/"[Client A]"), в этом
+проекте не настроен и не используется: здесь нет business/, projects/, contacts/.
 
 ## HTML Report Template
 
