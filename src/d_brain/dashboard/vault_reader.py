@@ -435,6 +435,56 @@ def _enrich_positions(positions: list[dict]) -> tuple[list[dict], dict]:
     return enriched, summary
 
 
+_HISTORY_REL_PATH = "finances/defi-history.jsonl"
+
+
+def _record_history_snapshot(total_value: float, total_invested: float) -> None:
+    """Append today's portfolio value to the history log, one point/day.
+
+    Deliberate exception to this module's "read-only" contract (see module
+    docstring): there is no separate background job tracking value over
+    time, so the dashboard itself stamps a snapshot on each visit. Keyed by
+    date and rewritten whole — a second visit same day updates today's
+    point in place rather than appending a duplicate.
+    """
+    import json
+
+    path = vault_root() / _HISTORY_REL_PATH
+    today = datetime.now().strftime("%Y-%m-%d")
+    points: dict[str, dict] = {}
+    if path.exists():
+        try:
+            for line in _read_text(path).splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                rec = json.loads(line)
+                points[rec["date"]] = rec
+        except Exception:  # noqa: BLE001 — a corrupt history file must not break the page
+            points = {}
+    points[today] = {"date": today, "total_value": total_value, "total_invested": total_invested}
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("w", encoding="utf-8") as f:
+            for date in sorted(points):
+                f.write(json.dumps(points[date], ensure_ascii=False) + "\n")
+    except OSError:
+        pass  # best-effort — a write failure must not break page rendering
+
+
+def _get_history() -> list[dict]:
+    import json
+
+    path = vault_root() / _HISTORY_REL_PATH
+    if not path.exists():
+        return []
+    try:
+        points = [json.loads(line) for line in _read_text(path).splitlines() if line.strip()]
+    except Exception:  # noqa: BLE001
+        return []
+    return sorted(points, key=lambda p: p["date"])
+
+
 def get_defi() -> dict:
     rel_path = "finances/defi-log.md"
     path = vault_root() / rel_path
@@ -497,12 +547,25 @@ def get_defi() -> dict:
     journal_rows.sort(key=lambda r: r["date"], reverse=True)
     enriched_positions, positions_summary = _enrich_positions(positions)
 
+    if positions_summary["total_value"] is not None:
+        _record_history_snapshot(
+            positions_summary["total_value"], positions_summary["total_invested"]
+        )
+
+    allocation = [
+        {"label": f"{p['asset']} · {p['platform']}", "value": p["current_value"]}
+        for p in enriched_positions
+        if p["current_value"] is not None
+    ]
+
     return {
         "exists": True,
         "source_path": rel_path,
         "error": None,
         "tables": tables,
         "journal_rows": journal_rows,
+        "allocation": allocation,
+        "history": _get_history(),
         "bullet_sections": bullet_sections,
         "positions": enriched_positions,
         "positions_summary": positions_summary,

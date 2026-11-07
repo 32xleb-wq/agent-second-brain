@@ -46,6 +46,26 @@
     </div>
   </div>
 
+  <div class="chart-grid">
+    {% if allocation %}
+    <div class="summary-card">
+      <div class="summary-head">Распределение по позициям</div>
+      <canvas id="allocation-chart" height="220"></canvas>
+    </div>
+    {% endif %}
+    {% if history|length >= 2 %}
+    <div class="summary-card">
+      <div class="summary-head">Стоимость портфеля во времени</div>
+      <canvas id="history-chart" height="220"></canvas>
+    </div>
+    {% elif history|length == 1 %}
+    <div class="summary-card">
+      <div class="summary-head">Стоимость портфеля во времени</div>
+      <p class="empty-text">Пока одна точка — график появится после второго визита в другой день.</p>
+    </div>
+    {% endif %}
+  </div>
+
   <div class="table-wrap">
     <table class="data-table">
       <thead><tr><th>Платформа</th><th>Актив</th><th>Кол-во</th><th>Вложено $</th><th>Цена</th><th>Стоимость сейчас</th><th>P&L $</th><th>P&L %</th></tr></thead>
@@ -121,4 +141,47 @@
   {% endif %}
 
   {% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if allocation or history|length >= 2 %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const allocation = {{ allocation | tojson }};
+const history = {{ history | tojson }};
+
+if (allocation.length && document.getElementById('allocation-chart')) {
+  new Chart(document.getElementById('allocation-chart'), {
+    type: 'doughnut',
+    data: {
+      labels: allocation.map(a => a.label),
+      datasets: [{ data: allocation.map(a => a.value) }],
+    },
+    options: { plugins: { legend: { labels: { color: '#ece9f5' } } } },
+  });
+}
+
+if (history.length >= 2 && document.getElementById('history-chart')) {
+  new Chart(document.getElementById('history-chart'), {
+    type: 'line',
+    data: {
+      labels: history.map(h => h.date),
+      datasets: [{
+        label: 'Стоимость, $',
+        data: history.map(h => h.total_value),
+        borderColor: '#9b7bf2',
+        tension: 0.2,
+      }],
+    },
+    options: {
+      scales: {
+        x: { ticks: { color: '#a39fb3' }, grid: { color: '#2a2733' } },
+        y: { ticks: { color: '#a39fb3' }, grid: { color: '#2a2733' } },
+      },
+      plugins: { legend: { labels: { color: '#ece9f5' } } },
+    },
+  });
+}
+</script>
+{% endif %}
 {% endblock %}

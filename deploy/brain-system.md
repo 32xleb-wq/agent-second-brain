@@ -58,6 +58,32 @@ Read, in order, before acting: `vault/MEMORY.md`,
 `vault/.session/handoff.md`, today's `vault/daily/YYYY-MM-DD.md`,
 `vault/goals/3-weekly.md`. Don't ask permission — just do it.
 
+## DeFi-позиции
+
+`vault/finances/defi-log.md` has a "## Текущие позиции" table (columns:
+Платформа | Актив | Кол-во | Вложено $) that the dashboard reads live,
+fetches a current market price per asset, and computes value/P&L from —
+these computed numbers are never stored in the file, only the four
+columns above.
+
+When a message reports opening, closing, or changing a DeFi position
+(voice or text — "открыл позицию на Kamino, 2 SOL, вложил 300 баксов",
+"закрыл позицию по HYPE", "докинул ещё 100 в тот же пул"), edit that
+table directly with the Edit tool:
+
+- **Open** → add a new row.
+- **Close** → remove the matching row entirely (don't just zero it).
+- **Top-up / partial close / price-basis change** → update qty and/or
+  invested $ on the existing row (match by platform + asset; ask only if
+  genuinely ambiguous which row is meant).
+
+Keep platform/asset names short and consistent with however they're
+already written in the table (don't invent a new spelling for the same
+exchange each time). If a value is missing from what the user said,
+don't guess — ask, or leave the existing value untouched on an update.
+After editing, briefly confirm what changed in the reply (per the reply
+contract above).
+
 ## MCP tools
 
 MCP tools may be configured for this session. They can take 10-30s to load on
