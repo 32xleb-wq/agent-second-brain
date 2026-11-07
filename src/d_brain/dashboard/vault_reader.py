@@ -289,6 +289,151 @@ def get_tasks() -> dict:
 
 # ── DeFi ─────────────────────────────────────────────────────────────────
 
+# Ticker → CoinGecko coin id, for the small set of assets this portfolio
+# actually uses. A ticker missing here just means "no live price" — the
+# position still renders with its invested amount, nothing breaks.
+_COINGECKO_IDS: dict[str, str] = {
+    "SOL": "solana",
+    "ETH": "ethereum",
+    "BTC": "bitcoin",
+    "USDT": "tether",
+    "USDC": "usd-coin",
+    "RLUSD": "ripple-usd",
+    "HYPE": "hyperliquid",
+}
+
+_PRICE_CACHE_TTL = 60.0  # seconds — enough to survive a page reload burst
+_price_cache: dict[str, object] = {"ts": 0.0, "prices": {}}
+
+
+def _fetch_prices(tickers: set[str]) -> dict[str, float]:
+    """Live USD price per ticker, for tickers we know a CoinGecko id for.
+
+    Best-effort: any failure (network, rate limit, unknown ticker) just
+    means that ticker's price is missing from the result — callers must
+    treat a missing key as "no live price", never raise.
+    """
+    import time
+
+    import httpx
+
+    ids_wanted = {t: _COINGECKO_IDS[t] for t in tickers if t in _COINGECKO_IDS}
+    if not ids_wanted:
+        return {}
+
+    now = time.time()
+    cached_prices = _price_cache["prices"]
+    if now - _price_cache["ts"] < _PRICE_CACHE_TTL and set(ids_wanted) <= set(
+        cached_prices
+    ):
+        return {t: cached_prices[t] for t in ids_wanted}
+
+    try:
+        resp = httpx.get(
+            "https://api.coingecko.com/api/v3/simple/price",
+            params={"ids": ",".join(sorted(set(ids_wanted.values()))), "vs_currencies": "usd"},
+            timeout=5.0,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+    except Exception:  # noqa: BLE001 — a flaky price API must never break the page
+        return {t: cached_prices[t] for t in ids_wanted if t in cached_prices}
+
+    prices = {}
+    for ticker, coin_id in ids_wanted.items():
+        price = data.get(coin_id, {}).get("usd")
+        if price is not None:
+            prices[ticker] = float(price)
+
+    _price_cache["ts"] = now
+    _price_cache["prices"] = {**cached_prices, **prices}
+    return prices
+
+
+def _parse_positions(headers: list[str], rows: list[list[str]]) -> list[dict]:
+    """Turn a "Текущие позиции" table into position dicts, matching columns
+    by header name (not index) so the owner can reorder columns freely."""
+
+    def col(name_part: str) -> int | None:
+        for i, h in enumerate(headers):
+            if name_part in h.lower():
+                return i
+        return None
+
+    i_platform = col("платформ")
+    i_asset = col("актив")
+    i_qty = col("кол")
+    i_invested = col("влож")
+
+    positions = []
+    for row in rows:
+        if _is_placeholder_row(headers, row):
+            continue
+
+        def cell(i: int | None) -> str:
+            return row[i].strip() if i is not None and i < len(row) else ""
+
+        asset = cell(i_asset)
+        qty_raw = cell(i_qty)
+        invested_raw = cell(i_invested)
+        qty = _parse_number(qty_raw)
+        invested = _parse_number(invested_raw)
+
+        positions.append(
+            {
+                "platform": cell(i_platform) or NOT_SPECIFIED,
+                "asset": asset or NOT_SPECIFIED,
+                "qty": qty,
+                "qty_raw": qty_raw or NOT_SPECIFIED,
+                "invested": invested,
+                "invested_raw": invested_raw or NOT_SPECIFIED,
+            }
+        )
+    return positions
+
+
+def _parse_number(raw: str) -> float | None:
+    cleaned = raw.replace(" ", "").replace(",", ".").replace("$", "")
+    try:
+        return float(cleaned)
+    except ValueError:
+        return None
+
+
+def _enrich_positions(positions: list[dict]) -> tuple[list[dict], dict]:
+    tickers = {p["asset"].upper() for p in positions if p["asset"] != NOT_SPECIFIED}
+    prices = _fetch_prices(tickers)
+
+    total_invested = 0.0
+    total_value = 0.0
+    priced_count = 0
+    enriched = []
+    for p in positions:
+        price = prices.get(p["asset"].upper())
+        current_value = price * p["qty"] if price is not None and p["qty"] is not None else None
+        pnl = (
+            current_value - p["invested"]
+            if current_value is not None and p["invested"] is not None
+            else None
+        )
+        pnl_pct = (
+            (pnl / p["invested"] * 100) if pnl is not None and p["invested"] else None
+        )
+        if current_value is not None and p["invested"] is not None:
+            total_invested += p["invested"]
+            total_value += current_value
+            priced_count += 1
+        enriched.append({**p, "price": price, "current_value": current_value, "pnl": pnl, "pnl_pct": pnl_pct})
+
+    summary = {
+        "total_invested": total_invested if priced_count else None,
+        "total_value": total_value if priced_count else None,
+        "total_pnl": (total_value - total_invested) if priced_count else None,
+        "priced_count": priced_count,
+        "total_count": len(positions),
+    }
+    return enriched, summary
+
 
 def get_defi() -> dict:
     rel_path = "finances/defi-log.md"
@@ -304,9 +449,13 @@ def get_defi() -> dict:
     tables = []
     journal_rows = []
     bullet_sections = []
+    positions: list[dict] = []
 
     for b in blocks:
         if b["type"] == "table":
+            if b["title"] and "позици" in b["title"].lower():
+                positions.extend(_parse_positions(b["headers"], b["rows"]))
+                continue
             rows = b["rows"]
             is_empty = len(rows) == 0 or (len(rows) == 1 and _is_placeholder_row(b["headers"], rows[0]))
             tables.append(
@@ -346,6 +495,7 @@ def get_defi() -> dict:
             )
 
     journal_rows.sort(key=lambda r: r["date"], reverse=True)
+    enriched_positions, positions_summary = _enrich_positions(positions)
 
     return {
         "exists": True,
@@ -354,6 +504,8 @@ def get_defi() -> dict:
         "tables": tables,
         "journal_rows": journal_rows,
         "bullet_sections": bullet_sections,
+        "positions": enriched_positions,
+        "positions_summary": positions_summary,
         "note_href": note_href(rel_path, "/defi"),
     }
 

@@ -12,6 +12,65 @@
   <div class="notice notice-error">Не удалось прочитать <code>finances/defi-log.md</code>: {{ error }}</div>
   {% else %}
 
+  {% if positions %}
+  <h2 class="section-title">Текущие позиции</h2>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-head">Вложено</div>
+      {% if positions_summary.total_invested is not none %}
+      <p class="stat-value">${{ "%.2f"|format(positions_summary.total_invested) }}</p>
+      {% else %}
+      <p class="empty-text">нет данных</p>
+      {% endif %}
+    </div>
+    <div class="summary-card">
+      <div class="summary-head">Текущая стоимость</div>
+      {% if positions_summary.total_value is not none %}
+      <p class="stat-value">${{ "%.2f"|format(positions_summary.total_value) }}</p>
+      {% else %}
+      <p class="empty-text">нет данных</p>
+      {% endif %}
+    </div>
+    <div class="summary-card">
+      <div class="summary-head">P&L</div>
+      {% if positions_summary.total_pnl is not none %}
+      <p class="stat-value {{ 'pnl-pos' if positions_summary.total_pnl >= 0 else 'pnl-neg' }}">
+        {{ "%+.2f"|format(positions_summary.total_pnl) }}$
+      </p>
+      {% else %}
+      <p class="empty-text">нет данных</p>
+      {% endif %}
+      {% if positions_summary.priced_count < positions_summary.total_count %}
+      <p class="dim-inline">цена не найдена для {{ positions_summary.total_count - positions_summary.priced_count }} из {{ positions_summary.total_count }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Платформа</th><th>Актив</th><th>Кол-во</th><th>Вложено $</th><th>Цена</th><th>Стоимость сейчас</th><th>P&L $</th><th>P&L %</th></tr></thead>
+      <tbody>
+        {% for p in positions %}
+        <tr>
+          <td>{{ p.platform }}</td>
+          <td>{{ p.asset }}</td>
+          <td>{{ p.qty_raw }}</td>
+          <td>{{ p.invested_raw }}</td>
+          <td>{% if p.price is not none %}${{ "%.4f"|format(p.price) }}{% else %}<span class="dim">—</span>{% endif %}</td>
+          <td>{% if p.current_value is not none %}${{ "%.2f"|format(p.current_value) }}{% else %}<span class="dim">—</span>{% endif %}</td>
+          <td class="{% if p.pnl is not none %}{{ 'pnl-pos' if p.pnl >= 0 else 'pnl-neg' }}{% endif %}">
+            {% if p.pnl is not none %}{{ "%+.2f"|format(p.pnl) }}{% else %}<span class="dim">—</span>{% endif %}
+          </td>
+          <td class="{% if p.pnl_pct is not none %}{{ 'pnl-pos' if p.pnl_pct >= 0 else 'pnl-neg' }}{% endif %}">
+            {% if p.pnl_pct is not none %}{{ "%+.1f"|format(p.pnl_pct) }}%{% else %}<span class="dim">—</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
   {% for t in tables %}
   <h2 class="section-title">{{ t.title }}</h2>
   {% if t.empty %}

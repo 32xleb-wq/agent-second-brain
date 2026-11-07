@@ -373,6 +373,9 @@ a { color: inherit; text-decoration: none; }
   gap: 8px;
   align-items: baseline;
 }
+.stat-value { font-size: 24px; font-weight: 600; }
+.pnl-pos { color: #4ade80; }
+.pnl-neg { color: #f87171; }
 
 /* ── Bottom nav (mobile) ─────────────────────────────────────── */
 
