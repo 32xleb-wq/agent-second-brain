@@ -195,6 +195,12 @@ _CHROME_LINE_RE = re.compile(
     r"|esc to interrupt"        # working spinner hint
     r"|^\s*⏵⏵"                  # footer arrows
     r"|^\s{2}\S.* \| .* \| "    # status line: "  name | model | path"
+    # CLI self-update toast — observed live 2026-11-12 leaking through as a
+    # "reply" (extract_partial_reply has no marker-pair guard against it,
+    # since it's not wrapped in <<<R:..>>>/<<<E:..>>> at all): the toast
+    # appears while the pane is idle between turns, right where the stall
+    # recovery path samples the "confirmed idle" pane.
+    r"|Auto-update (failed|succeeded|available)"
 )
 
 

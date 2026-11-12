@@ -551,6 +551,21 @@ def test_extract_partial_reply_none_when_only_chrome_remains():
     assert extract_partial_reply(pane, rid) is None
 
 
+def test_extract_partial_reply_ignores_auto_update_toast():
+    """Incident 2026-11-12: a user turn's real reply had its closing marker
+    lost under the CLI's own "Auto-update failed" toast, and the toast text
+    was delivered to the user as if it were the model's answer. The toast
+    line must never surface as recovered reply content."""
+    rid = "autoupd1"
+    pane = (
+        f"<<<R:{rid}>>>\n"
+        "the real answer\n"
+        "✘ Auto-update failed: no write permission to npm prefix · Run /doctor\n"
+        "❯\n"
+    )
+    assert extract_partial_reply(pane, rid) == "the real answer"
+
+
 def test_extract_partial_reply_strips_multiple_chrome_lines():
     rid = "multi001"
     pane = (
