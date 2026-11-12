@@ -123,6 +123,20 @@ def test_ensure_session_noop_when_present(tmp_path, clock):
     assert "new-session" not in fake.sent_subcommands()
 
 
+def test_ensure_session_reenforces_pane_size_when_present(tmp_path, clock):
+    """A long-lived session that drifted (window-size knocked back to
+    automatic, e.g. by a reattaching client) must self-heal on every
+    ensure_session() call, not just at creation — see claude_session.py
+    _enforce_pane_size docstring for the observed failure mode."""
+    fake = FakeTmux([READY], exists=True)
+    s = make_session(tmp_path, fake, clock)
+    s.ensure_session()
+    set_option_calls = [c for c in fake.calls if c[1:2] == ["set-option"]]
+    assert any(c[4] == "window-size" and c[5] == "manual" for c in set_option_calls)
+    assert any(c[4] == "default-size" for c in set_option_calls)
+    assert "resize-window" in fake.sent_subcommands()
+
+
 def test_ensure_session_handles_trust_prompt(tmp_path, clock):
     fake = FakeTmux([TRUST, READY], exists=False)
     s = make_session(tmp_path, fake, clock)

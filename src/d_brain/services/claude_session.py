@@ -214,9 +214,39 @@ class ClaudeSession:
             parts += ["--model", shlex.quote(self.model)]
         return f"cd {shlex.quote(str(self.work_dir))} && " + " ".join(parts)
 
+    def _enforce_pane_size(self) -> None:
+        """Re-assert the fixed pane geometry — idempotent, cheap, safe to
+        call on every turn (see call sites).
+
+        window-size=manual only pins whatever size was active when it was
+        set; it does not retroactively protect a session created by an
+        older running process (e.g. before a _PANE_WIDTH/_PANE_HEIGHT bump)
+        — that session's tmux-recorded `default-size` stays at the stale
+        values forever, since _ensure_locked() normally no-ops once the
+        tmux session already exists. If the window-size flag itself ever
+        gets knocked back to automatic (observed live — cause unconfirmed),
+        the window then silently shrinks to that stale default-size the
+        next time a differently-sized client (dis)connects. Re-applying all
+        three settings here on every _ensure_locked() call — not just at
+        creation — self-heals a drifted long-lived session without needing
+        a bot restart or session recreation.
+        """
+        self._tmux("set-option", "-t", self.session_name, "window-size", "manual")
+        self._tmux(
+            "set-option",
+            "-t",
+            self.session_name,
+            "default-size",
+            f"{_PANE_WIDTH}x{_PANE_HEIGHT}",
+        )
+        self._tmux(
+            "resize-window", "-t", self._target, "-x", _PANE_WIDTH, "-y", _PANE_HEIGHT
+        )
+
     def _ensure_locked(self) -> None:
         """Create + ready the session if needed. Caller must hold the lock."""
         if self._session_exists():
+            self._enforce_pane_size()
             return
         self._ready_flag.unlink(missing_ok=True)
         self._tmux(
@@ -242,8 +272,12 @@ class ClaudeSession:
         # it, and is_complete() can never see it again — ask() then waits out
         # the full stall_timeout on a turn that actually finished in seconds.
         # window-size manual freezes the window at the size we set here,
-        # independent of whatever attaches.
-        self._tmux("set-option", "-t", self.session_name, "window-size", "manual")
+        # independent of whatever attaches. default-size backstops the case
+        # where window-size itself gets reset to automatic (see
+        # _enforce_pane_size): a stale default-size is what makes that
+        # failure mode silently shrink to a years-old constant instead of
+        # the current one.
+        self._enforce_pane_size()
         # Pre-create the transcript owner-only: `cat >>` appends and keeps
         # the mode, while letting tmux create it would use the server umask.
         self._pane_log.touch()
