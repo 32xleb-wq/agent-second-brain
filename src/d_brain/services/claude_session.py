@@ -49,7 +49,16 @@ logger = logging.getLogger(__name__)
 Runner = Callable[..., subprocess.CompletedProcess]
 
 DEFAULT_TIMEOUT = 1200  # 20 min, matches the old subprocess pipeline
-DEFAULT_STALL_TIMEOUT = 600  # no new pane bytes for this long ⇒ wedged
+# Bumped 600->1100 on 2026-11-13: two consecutive real (non-stalled) turns
+# on this long-lived session logged "returned error" at 628s/635s — just
+# over the old 600s. This is the same growing-context effect documented in
+# the 2026-09-27 handoff entry (silent thinking before first visible pane
+# output lengthens as this session's own context grows), not a new bug.
+# Raising the constant is a stopgap, not the fix — see that entry: the real
+# fix is keeping this session's context compact, not an ever-rising timeout.
+# 1100 leaves 100s of headroom under DEFAULT_TIMEOUT so a turn that
+# genuinely never responds still gets a hard timeout verdict, not a stall.
+DEFAULT_STALL_TIMEOUT = 1100  # no new pane bytes for this long ⇒ wedged
 # request_id prefix that marks a turn as maintenance (pipeline, doctor,
 # /process) — such turns are never steering targets for chat input.
 MAINT_PREFIX = "maint-"
