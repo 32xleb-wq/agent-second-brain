@@ -201,6 +201,13 @@ _CHROME_LINE_RE = re.compile(
     # appears while the pane is idle between turns, right where the stall
     # recovery path samples the "confirmed idle" pane.
     r"|Auto-update (failed|succeeded|available)"
+    # Terminal/TUI paste-collapse placeholder — observed live 2026-11-13 on
+    # an hourly cron turn (not reproduced on manual retries with the same
+    # prompt, so likely a rare render race around tmux paste-buffer rather
+    # than a deterministic trigger). Filtered defensively like the toast
+    # above: whatever causes it, it must never be mistaken for real reply
+    # content.
+    r"|paste again to expand"
 )
 
 

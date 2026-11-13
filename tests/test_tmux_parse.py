@@ -566,6 +566,26 @@ def test_extract_partial_reply_ignores_auto_update_toast():
     assert extract_partial_reply(pane, rid) == "the real answer"
 
 
+def test_extract_partial_reply_ignores_paste_collapse_placeholder():
+    """Incident 2026-11-13: an hourly cron turn's reply lost its closing
+    marker and a terminal paste-collapse placeholder ("paste again to
+    expand") was delivered to the user instead of the real content. Not
+    reproduced on manual retry with the identical prompt (looks like a rare
+    render race around tmux paste-buffer), so filtered defensively rather
+    than traced to a deterministic cause."""
+    rid = "pastecol1"
+    pane = (
+        f"<<<R:{rid}>>>\n"
+        "Пора на зеркало или фронталку\n"
+        "Произнеси вслух:\n"
+        "paste again to expand\n"
+        "❯\n"
+    )
+    assert extract_partial_reply(pane, rid) == (
+        "Пора на зеркало или фронталку\nПроизнеси вслух:"
+    )
+
+
 def test_extract_partial_reply_strips_multiple_chrome_lines():
     rid = "multi001"
     pane = (
