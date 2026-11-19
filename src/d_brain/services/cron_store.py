@@ -53,6 +53,7 @@ class CronJob:
     schedule: Schedule
     chat_id: int | None = None
     delete_after_run: bool = False
+    delete_message_after_seconds: int | None = None
     enabled: bool = True
     created_at: str = ""
     state: JobState = field(default_factory=JobState)
@@ -119,6 +120,7 @@ def _job_from_dict(raw: dict) -> CronJob:
         ),
         chat_id=raw.get("chat_id"),
         delete_after_run=raw.get("delete_after_run", False),
+        delete_message_after_seconds=raw.get("delete_message_after_seconds"),
         enabled=raw.get("enabled", True),
         created_at=raw.get("created_at", ""),
         state=JobState(

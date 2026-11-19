@@ -55,6 +55,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_add.add_argument("--id", dest="job_id", help="job id (default: generated)")
     p_add.add_argument("--chat-id", type=int, help="Telegram chat for delivery")
     p_add.add_argument("--delete-after-run", action="store_true")
+    p_add.add_argument(
+        "--delete-message-after",
+        type=int,
+        dest="delete_message_after",
+        help="auto-delete the delivered Telegram message(s) after N seconds",
+    )
 
     p_list = sub.add_parser("list", help="list jobs")
     add_dir(p_list)
@@ -94,6 +100,7 @@ def _cmd_add(args: argparse.Namespace) -> int:
         schedule=schedule,
         chat_id=args.chat_id,
         delete_after_run=args.delete_after_run,
+        delete_message_after_seconds=args.delete_message_after,
         created_at=now.isoformat(),
     )
     job.state.next_run = next_run.isoformat() if next_run else None
@@ -116,8 +123,13 @@ def _cmd_list(args: argparse.Namespace) -> int:
     for j in jobs:
         flags = "" if j.enabled else " [disabled]"
         oneshot = " [one-shot]" if j.delete_after_run else ""
+        msg_del = (
+            f" [msg-del {j.delete_message_after_seconds}s]"
+            if j.delete_message_after_seconds
+            else ""
+        )
         print(
-            f"{j.id}: {_fmt_schedule(j)}{oneshot}{flags}\n"
+            f"{j.id}: {_fmt_schedule(j)}{oneshot}{msg_del}{flags}\n"
             f"  next: {j.state.next_run}  last: {j.state.last_run or '-'} "
             f"({j.state.last_status or '-'})\n"
             f"  prompt: {j.prompt}"

@@ -52,9 +52,10 @@ class CronRunner:
         store: CronStore,
         session: Any,
         *,
-        deliver: Callable[[int, str], Awaitable[None]],
+        deliver: Callable[[int, str], Awaitable[list[int] | None]],
         alert: Callable[[str], Awaitable[None]],
         default_chat_id: int | None,
+        delete_message: Callable[[int, int], Awaitable[None]] | None = None,
         job_timeout: float = 600.0,
         max_consecutive_errors: int = 3,
         retry_seconds: float = 300.0,
@@ -65,11 +66,16 @@ class CronRunner:
         self.deliver = deliver
         self.alert = alert
         self.default_chat_id = default_chat_id
+        self.delete_message = delete_message
         self.job_timeout = job_timeout
         self.max_consecutive_errors = max_consecutive_errors
         self.retry_seconds = retry_seconds
         self.clock = clock or (lambda: datetime.now(UTC))
         self._warned_dormant: set[str] = set()
+        # Background auto-delete timers. Kept alive here only so they aren't
+        # GC'd mid-sleep; in-memory by design — a bot restart within the
+        # delay window loses the timer, same as any other in-flight work.
+        self._delete_tasks: set[asyncio.Task] = set()
 
     # ── scheduling ───────────────────────────────────────────────────
 
@@ -153,10 +159,15 @@ class CronRunner:
                 chat = job.chat_id or self.default_chat_id
                 if chat is not None:
                     try:
-                        await self.deliver(chat, reply)
+                        message_ids = await self.deliver(chat, reply)
                     except Exception as exc:  # noqa: BLE001 — Telegram hiccup
                         logger.exception("cron job %s delivery failed", job.id)
                         delivery_error = str(exc)[:200]
+                    else:
+                        if message_ids and job.delete_message_after_seconds:
+                            self._schedule_delete(
+                                chat, message_ids, job.delete_message_after_seconds
+                            )
             # Jobs are stateless by contract; drop the turn's context so
             # the next job starts clean and the window never grows. Best
             # effort — a failed /clear must not block the state update.
@@ -184,6 +195,33 @@ class CronRunner:
                 f"(последняя: {res.status}). Включить: "
                 f"<code>python -m d_brain.cron enable {job.id}</code>"
             )
+
+    def _schedule_delete(
+        self, chat_id: int, message_ids: list[int], delay_seconds: int
+    ) -> None:
+        if self.delete_message is None:
+            logger.warning(
+                "job wants to auto-delete its message but no delete_message "
+                "callable is wired — ignoring"
+            )
+            return
+
+        async def _run() -> None:
+            await asyncio.sleep(delay_seconds)
+            for mid in message_ids:
+                try:
+                    await self.delete_message(chat_id, mid)
+                except Exception:  # noqa: BLE001 — e.g. already deleted
+                    logger.warning(
+                        "auto-delete failed for message %s in chat %s",
+                        mid,
+                        chat_id,
+                        exc_info=True,
+                    )
+
+        task = asyncio.create_task(_run())
+        self._delete_tasks.add(task)
+        task.add_done_callback(self._delete_tasks.discard)
 
     # ── state updates (single write path: store.mutate) ─────────────
 
@@ -274,12 +312,15 @@ async def run_cron(settings: Any, bot: Any) -> None:
     store = CronStore(settings.cron_dir)
     session = runtime.get_cron_session(settings)
 
-    async def deliver(chat_id: int, text: str) -> None:
-        await send_response(bot, chat_id, text)
+    async def deliver(chat_id: int, text: str) -> list[int]:
+        return await send_response(bot, chat_id, text)
 
     async def alert(text: str) -> None:
         if settings.admin_chat_id is not None:
             await bot.send_message(settings.admin_chat_id, text)
+
+    async def delete_message(chat_id: int, message_id: int) -> None:
+        await bot.delete_message(chat_id, message_id)
 
     runner = CronRunner(
         store,
@@ -287,6 +328,7 @@ async def run_cron(settings: Any, bot: Any) -> None:
         deliver=deliver,
         alert=alert,
         default_chat_id=settings.admin_chat_id,
+        delete_message=delete_message,
         job_timeout=settings.cron_job_timeout,
         max_consecutive_errors=settings.cron_max_consecutive_errors,
         retry_seconds=settings.cron_retry_seconds,

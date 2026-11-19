@@ -216,22 +216,30 @@ def format_empty_daily() -> str:
 MAX_RESPONSE_LENGTH = 4096
 
 
-async def send_response(bot: Any, chat_id: int, text: str) -> None:
+async def send_response(bot: Any, chat_id: int, text: str) -> list[int]:
     """Send a Claude reply: sanitize HTML, split to 4096-char chunks,
-    fall back to plain text when Telegram rejects the markup."""
+    fall back to plain text when Telegram rejects the markup.
+
+    Returns the message_ids actually sent, in order — callers that need to
+    act on the delivered message (e.g. schedule an auto-delete) don't have
+    to re-derive chunking.
+    """
     sanitized = sanitize_telegram_html(text)
     if not validate_telegram_html(sanitized):
         sanitized = html.escape(text)
 
     chunks = split_text(sanitized, MAX_RESPONSE_LENGTH)
+    message_ids: list[int] = []
     for i, chunk in enumerate(chunks):
         try:
-            await bot.send_message(chat_id, chunk)
+            msg = await bot.send_message(chat_id, chunk)
         except Exception:
             # Fallback: send without HTML
-            await bot.send_message(chat_id, chunk, parse_mode=None)
+            msg = await bot.send_message(chat_id, chunk, parse_mode=None)
+        message_ids.append(msg.message_id)
         if i < len(chunks) - 1:
             await asyncio.sleep(0.3)
+    return message_ids
 
 
 def split_text(text: str, max_len: int) -> list[str]:

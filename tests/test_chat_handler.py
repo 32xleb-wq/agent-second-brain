@@ -1,6 +1,7 @@
 """Tests for the unified chat handler (v3.0: immediate routing, no debounce)."""
 
 import asyncio
+from types import SimpleNamespace
 
 
 class FakeManager:
@@ -19,6 +20,7 @@ class FakeBot:
 
     async def send_message(self, chat_id, text, **kwargs):
         self.messages.append((chat_id, text))
+        return SimpleNamespace(message_id=len(self.messages))
 
     async def send_chat_action(self, chat_id, action):
         pass

@@ -4,6 +4,7 @@ FakeSession pattern as in test_claude_session.py — no tmux, scripted
 AskResults, recorder callables for deliver/alert, a manual clock.
 """
 
+import asyncio
 from datetime import UTC, datetime, timedelta
 
 from d_brain.services.claude_session import AskResult
@@ -145,6 +146,53 @@ async def test_job_chat_id_overrides_default(tmp_path):
         store, FakeSession([AskResult("ok", reply="x")]), deliver=deliver
     ).tick()
     assert deliver.calls == [(999, "x")]
+
+
+async def test_delete_message_after_seconds_schedules_deletion(tmp_path, monkeypatch):
+    from d_brain.services import cron_runner as cron_runner_module
+
+    # 0 is falsy (and would mean "no auto-delete"); use a real positive
+    # delay but fast-forward the sleep so the test doesn't actually wait.
+    orig_sleep = asyncio.sleep
+    monkeypatch.setattr(cron_runner_module.asyncio, "sleep", lambda _s: orig_sleep(0))
+
+    store = _store(tmp_path)
+    _add_job(store, "j1", delete_message_after_seconds=600)
+
+    class IdDeliver:
+        async def __call__(self, chat_id, text):
+            return [42, 43]
+
+    deleted: list[tuple[int, int]] = []
+
+    async def delete_message(chat_id, message_id):
+        deleted.append((chat_id, message_id))
+
+    runner = _runner(
+        store,
+        FakeSession([AskResult("ok", reply="x")]),
+        deliver=IdDeliver(),
+        delete_message=delete_message,
+    )
+    await runner.tick()
+    # give the scheduled (fast-forwarded) deletion task a turn to run
+    await orig_sleep(0)
+    await orig_sleep(0)
+    assert deleted == [(111, 42), (111, 43)]
+
+
+async def test_no_delete_message_configured_is_a_noop(tmp_path):
+    store = _store(tmp_path)
+    _add_job(store, "j1", delete_message_after_seconds=5)
+
+    class IdDeliver:
+        async def __call__(self, chat_id, text):
+            return [42]
+
+    # delete_message defaults to None — must not raise, just skip.
+    await _runner(
+        store, FakeSession([AskResult("ok", reply="x")]), deliver=IdDeliver()
+    ).tick()
 
 
 async def test_silent_reply_suppresses_delivery(tmp_path):
